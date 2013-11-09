@@ -3,6 +3,7 @@ South==0.8.2
 argparse==1.2.1
 distribute==0.6.34
 django-allauth==0.14.1
+django-bootstrap-toolkit==2.15.0
 django-tastypie==0.10.0
 oauthlib==0.6.0
 python-dateutil==2.2
@@ -10,6 +11,5 @@ python-openid==2.2.5
 requests==2.0.1
 requests-oauthlib==0.4.0
 six==1.2.0
-urllib3==1.5
 wsgiref==0.1.2
 django-extensions

@@ -1,0 +1,36 @@
+{% extends "index.html" %}
+{% load bootstrap_toolkit %}
+{% block content %}
+<div class="row">
+    <div class="col-lg-6">
+        <h2>Registro de nuevo usuario</h2>
+        <p>
+            dsasad
+        </p>
+    </div>
+	¿Ya tienes usuario? <a class='' href="{% url 'account_login' %}">Ingresar</a>
+    <div class="col-lg-6">
+            <form class="form-vertical" method='POST'>
+{% csrf_token %} 
+	{{ form|as_bootstrap }}
+                <div class="control-group">        
+                <div class="controls">                    
+			<input class='btn btn-success' type="submit" value="Registrarse"/>
+                </div>
+                </div>
+	</form>
+
+</div>
+</div>
+
+<div class="row marketing">
+<div class="col-lg-12 center">
+    <a class="btn-auth btn-facebook" href="#button">Ingresar con <b>Facebook</b></a>
+    <a class="btn-auth btn-twitter" href="#button">Ingresar con <b>Twitter</b></a>
+    <a class="btn-auth btn-google" href="#button">Ingresar con <b>Google</b></a><br/>
+    <a class="btn-auth btn-windows" href="#button">Ingresar con <b>Live</b></a>
+    <a class="btn-auth btn-yahoo" href="#button">Ingresar con <b>Yahoo</b></a>
+    <a class="btn-auth btn-github" href="#button">Ingresar con <b>GitHub</b></a>
+</div>
+</div>
+{% endblock content %}

@@ -75,9 +75,10 @@ class AbstractVotoMesa(models.Model):
         abstract = True
         unique_together = ('mesa', 'opcion')
 
-    #def buscar_imagen(self):
-    #    r = request.get(settings.URL_TELEGRAMAS + '/' + self.
-    
+    def buscar_imagen(self):
+        r = request.get(u"%s/%s/%s/%s" % (settings.URL_TELEGRAMAS, circuito.numero, mesa.numero, opcion.dne_id))
+	print 'Content-Type: image/jpeg'
+	print r.content 
 
     def __unicode__(self):
         return u"%s: %d" % (self.opcion, self.votos)
