@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -17,11 +17,15 @@ class Migration(SchemaMigration):
 
         # Adding model 'Municipio'
         db.create_table(u'core_municipio', (
-            ('dne_id', self.gf('django.db.models.fields.PositiveIntegerField')(primary_key=True)),
+            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('dne_id', self.gf('django.db.models.fields.PositiveIntegerField')()),
             ('provincia', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Provincia'])),
             ('nombre', self.gf('django.db.models.fields.CharField')(max_length=100)),
         ))
         db.send_create_signal(u'core', ['Municipio'])
+
+        # Adding unique constraint on 'Municipio', fields ['dne_id', 'provincia']
+        db.create_unique(u'core_municipio', ['dne_id', 'provincia_id'])
 
         # Adding model 'Circuito'
         db.create_table(u'core_circuito', (
@@ -52,8 +56,8 @@ class Migration(SchemaMigration):
 
         # Adding model 'Opcion'
         db.create_table(u'core_opcion', (
-            ('nombre', self.gf('django.db.models.fields.CharField')(unique=True, max_length=100)),
             ('dne_id', self.gf('django.db.models.fields.PositiveIntegerField')(primary_key=True)),
+            ('nombre', self.gf('django.db.models.fields.CharField')(max_length=100)),
         ))
         db.send_create_signal(u'core', ['Opcion'])
 
@@ -61,7 +65,7 @@ class Migration(SchemaMigration):
         db.create_table(u'core_eleccion', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('nombre', self.gf('django.db.models.fields.CharField')(max_length=50)),
-            ('fecha', self.gf('django.db.models.fields.DateTimeField')()),
+            ('fecha', self.gf('django.db.models.fields.DateTimeField')(null=True, blank=True)),
         ))
         db.send_create_signal(u'core', ['Eleccion'])
 
@@ -77,18 +81,20 @@ class Migration(SchemaMigration):
         # Adding model 'VotoMesaOficial'
         db.create_table(u'core_votomesaoficial', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('eleccion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Eleccion'])),
             ('mesa', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Mesa'])),
             ('opcion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Opcion'])),
             ('votos', self.gf('django.db.models.fields.IntegerField')()),
         ))
         db.send_create_signal(u'core', ['VotoMesaOficial'])
 
-        # Adding unique constraint on 'VotoMesaOficial', fields ['mesa', 'opcion']
-        db.create_unique(u'core_votomesaoficial', ['mesa_id', 'opcion_id'])
+        # Adding unique constraint on 'VotoMesaOficial', fields ['eleccion', 'mesa', 'opcion']
+        db.create_unique(u'core_votomesaoficial', ['eleccion_id', 'mesa_id', 'opcion_id'])
 
         # Adding model 'VotoMesaSocial'
         db.create_table(u'core_votomesasocial', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('eleccion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Eleccion'])),
             ('mesa', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Mesa'])),
             ('opcion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Opcion'])),
             ('votos', self.gf('django.db.models.fields.IntegerField')()),
@@ -96,31 +102,35 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'core', ['VotoMesaSocial'])
 
-        # Adding unique constraint on 'VotoMesaSocial', fields ['mesa', 'opcion']
-        db.create_unique(u'core_votomesasocial', ['mesa_id', 'opcion_id'])
+        # Adding unique constraint on 'VotoMesaSocial', fields ['eleccion', 'mesa', 'opcion']
+        db.create_unique(u'core_votomesasocial', ['eleccion_id', 'mesa_id', 'opcion_id'])
 
         # Adding model 'VotoMesaOCR'
         db.create_table(u'core_votomesaocr', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
+            ('eleccion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Eleccion'])),
             ('mesa', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Mesa'])),
             ('opcion', self.gf('django.db.models.fields.related.ForeignKey')(to=orm['core.Opcion'])),
             ('votos', self.gf('django.db.models.fields.IntegerField')()),
         ))
         db.send_create_signal(u'core', ['VotoMesaOCR'])
 
-        # Adding unique constraint on 'VotoMesaOCR', fields ['mesa', 'opcion']
-        db.create_unique(u'core_votomesaocr', ['mesa_id', 'opcion_id'])
+        # Adding unique constraint on 'VotoMesaOCR', fields ['eleccion', 'mesa', 'opcion']
+        db.create_unique(u'core_votomesaocr', ['eleccion_id', 'mesa_id', 'opcion_id'])
 
 
     def backwards(self, orm):
-        # Removing unique constraint on 'VotoMesaOCR', fields ['mesa', 'opcion']
-        db.delete_unique(u'core_votomesaocr', ['mesa_id', 'opcion_id'])
+        # Removing unique constraint on 'VotoMesaOCR', fields ['eleccion', 'mesa', 'opcion']
+        db.delete_unique(u'core_votomesaocr', ['eleccion_id', 'mesa_id', 'opcion_id'])
 
-        # Removing unique constraint on 'VotoMesaSocial', fields ['mesa', 'opcion']
-        db.delete_unique(u'core_votomesasocial', ['mesa_id', 'opcion_id'])
+        # Removing unique constraint on 'VotoMesaSocial', fields ['eleccion', 'mesa', 'opcion']
+        db.delete_unique(u'core_votomesasocial', ['eleccion_id', 'mesa_id', 'opcion_id'])
 
-        # Removing unique constraint on 'VotoMesaOficial', fields ['mesa', 'opcion']
-        db.delete_unique(u'core_votomesaoficial', ['mesa_id', 'opcion_id'])
+        # Removing unique constraint on 'VotoMesaOficial', fields ['eleccion', 'mesa', 'opcion']
+        db.delete_unique(u'core_votomesaoficial', ['eleccion_id', 'mesa_id', 'opcion_id'])
+
+        # Removing unique constraint on 'Municipio', fields ['dne_id', 'provincia']
+        db.delete_unique(u'core_municipio', ['dne_id', 'provincia_id'])
 
         # Deleting model 'Provincia'
         db.delete_table(u'core_provincia')
@@ -201,7 +211,7 @@ class Migration(SchemaMigration):
         },
         u'core.eleccion': {
             'Meta': {'object_name': 'Eleccion'},
-            'fecha': ('django.db.models.fields.DateTimeField', [], {}),
+            'fecha': ('django.db.models.fields.DateTimeField', [], {'null': 'True', 'blank': 'True'}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'nombre': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
             'opciones': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['core.Opcion']", 'symmetrical': 'False'})
@@ -222,15 +232,16 @@ class Migration(SchemaMigration):
             'url': ('django.db.models.fields.URLField', [], {'max_length': '200', 'null': 'True'})
         },
         u'core.municipio': {
-            'Meta': {'object_name': 'Municipio'},
-            'dne_id': ('django.db.models.fields.PositiveIntegerField', [], {'primary_key': 'True'}),
+            'Meta': {'unique_together': "(('dne_id', 'provincia'),)", 'object_name': 'Municipio'},
+            'dne_id': ('django.db.models.fields.PositiveIntegerField', [], {}),
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'nombre': ('django.db.models.fields.CharField', [], {'max_length': '100'}),
             'provincia': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Provincia']"})
         },
         u'core.opcion': {
             'Meta': {'object_name': 'Opcion'},
             'dne_id': ('django.db.models.fields.PositiveIntegerField', [], {'primary_key': 'True'}),
-            'nombre': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'})
+            'nombre': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
         u'core.provincia': {
             'Meta': {'object_name': 'Provincia'},
@@ -238,21 +249,24 @@ class Migration(SchemaMigration):
             'nombre': ('django.db.models.fields.CharField', [], {'max_length': '100'})
         },
         u'core.votomesaocr': {
-            'Meta': {'unique_together': "(('mesa', 'opcion'),)", 'object_name': 'VotoMesaOCR'},
+            'Meta': {'unique_together': "(('eleccion', 'mesa', 'opcion'),)", 'object_name': 'VotoMesaOCR'},
+            'eleccion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Eleccion']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mesa': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Mesa']"}),
             'opcion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Opcion']"}),
             'votos': ('django.db.models.fields.IntegerField', [], {})
         },
         u'core.votomesaoficial': {
-            'Meta': {'unique_together': "(('mesa', 'opcion'),)", 'object_name': 'VotoMesaOficial'},
+            'Meta': {'unique_together': "(('eleccion', 'mesa', 'opcion'),)", 'object_name': 'VotoMesaOficial'},
+            'eleccion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Eleccion']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mesa': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Mesa']"}),
             'opcion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Opcion']"}),
             'votos': ('django.db.models.fields.IntegerField', [], {})
         },
         u'core.votomesasocial': {
-            'Meta': {'unique_together': "(('mesa', 'opcion'),)", 'object_name': 'VotoMesaSocial'},
+            'Meta': {'unique_together': "(('eleccion', 'mesa', 'opcion'),)", 'object_name': 'VotoMesaSocial'},
+            'eleccion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Eleccion']"}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'mesa': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Mesa']"}),
             'opcion': ('django.db.models.fields.related.ForeignKey', [], {'to': u"orm['core.Opcion']"}),
