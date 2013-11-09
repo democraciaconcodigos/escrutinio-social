@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.weibo',
     'bootstrap_toolkit',
     'south',
+    'tastypie',	
     'django_extensions',
 )
 
@@ -135,4 +136,6 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = 'home'
+
+URL_TELEGRAMAS = 'http://127.0.0.1/'
 LANGUAGE_CODE = 'es-ar'
