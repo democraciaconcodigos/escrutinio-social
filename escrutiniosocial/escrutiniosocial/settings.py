@@ -59,6 +59,7 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.weibo',
     'core',
     'south',
+    'tastypie'
 )
 
 MIDDLEWARE_CLASSES = (
