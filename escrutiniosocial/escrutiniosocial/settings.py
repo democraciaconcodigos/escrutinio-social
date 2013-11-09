@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+
     # external apps
     'allauth',
     'allauth.account',
@@ -61,7 +62,7 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
 
-    # out apps
+    # our apps
     'core',
 )
 
