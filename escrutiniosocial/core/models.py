@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import Sum
 from django.conf import settings
 
+
 class Provincia(models.Model):
     dne_id = models.PositiveIntegerField(primary_key=True)
     nombre = models.CharField(max_length=100)
@@ -80,9 +81,13 @@ class AbstractVotoMesa(models.Model):
         unique_together = ('eleccion', 'mesa', 'opcion')
 
     def buscar_imagen(self):
-        r = request.get(u"%s/%s/%s/%s" % (settings.URL_TELEGRAMAS, circuito.numero, mesa.numero, opcion.dne_id))
-        print 'Content-Type: image/jpeg'
-        print r.content 
+        url = u"%s/%s/%s/%s" % (
+            settings.URL_TELEGRAMAS,
+            self.mesa.circuito.numero, self.mesa.numero, self.opcion.dne_id)
+        print url
+        #r = request.get()
+        #print 'Content-Type: image/jpeg'
+        #print r.content
 
     def __unicode__(self):
         return u"%s - %s: %d" % (self.eleccion, self.opcion, self.votos)

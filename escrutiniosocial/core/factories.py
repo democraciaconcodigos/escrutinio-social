@@ -19,7 +19,7 @@ class EleccionFactory(DjangoModelFactory):
         if extracted:
             # A list of opciones were passed in, use them
             for opcion in extracted:
-                OpcionFactory(eleccion=self, nombre=opcion)
+                OpcionFactory(nombre=opcion)
 
 
 class ProvinciaFactory(DjangoModelFactory):
@@ -43,7 +43,7 @@ class CircuitoFactory(DjangoModelFactory):
 
 class OpcionFactory(DjangoModelFactory):
     FACTORY_FOR = 'core.Opcion'
-    eleccion = factory.SubFactory(EleccionFactory)
+    dne_id = factory.Sequence(lambda n: n)
     nombre = factory.Sequence(lambda n: 'Opcion %d' % n)
 
 
@@ -67,5 +67,6 @@ class MesaFactory(DjangoModelFactory):
 
 class VotoMesaOficialFactory(DjangoModelFactory):
     FACTORY_FOR = 'core.VotoMesaOficial'
+    eleccion = factory.SubFactory(EleccionFactory)
     mesa = factory.SubFactory(MesaFactory)
     opcion = factory.SubFactory(Opcion)
