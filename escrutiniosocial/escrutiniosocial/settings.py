@@ -39,6 +39,10 @@ INSTALLED_APPS = (
 
     # external apps
     'south',
+    'django_extensions',
+
+    # out apps
+    'core',
 )
 
 MIDDLEWARE_CLASSES = (
