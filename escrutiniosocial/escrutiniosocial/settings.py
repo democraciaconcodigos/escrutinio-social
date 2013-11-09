@@ -37,7 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
-
+    'core',
     # external apps
     'allauth',
     'allauth.account',
@@ -58,12 +58,9 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.vimeo',
     # 'allauth.socialaccount.providers.vk',
     # 'allauth.socialaccount.providers.weibo',
-    'core',
+    'bootstrap_toolkit',
     'south',
     'django_extensions',
-
-    # our apps
-    'core',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -108,6 +105,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'escrutiniosocial', "static_files")
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'escrutiniosocial', "static"),
+)
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
@@ -121,6 +122,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'allauth.account.context_processors.account',
     'allauth.socialaccount.context_processors.socialaccount',
 )
+TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'escrutiniosocial', 'templates'),)
+
 
 AUTHENTICATION_BACKENDS = (
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -132,3 +135,4 @@ AUTHENTICATION_BACKENDS = (
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = 'home'
+LANGUAGE_CODE = 'es-ar'
