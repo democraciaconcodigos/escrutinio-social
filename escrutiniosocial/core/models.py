@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
-
+from django.conf import settings
 
 class Provincia(models.Model):
     dne_id = models.PositiveIntegerField(primary_key=True)
@@ -74,6 +74,10 @@ class AbstractVotoMesa(models.Model):
     class Meta:
         abstract = True
         unique_together = ('mesa', 'opcion')
+
+    #def buscar_imagen(self):
+    #    r = request.get(settings.URL_TELEGRAMAS + '/' + self.
+    
 
     def __unicode__(self):
         return u"%s: %d" % (self.opcion, self.votos)
