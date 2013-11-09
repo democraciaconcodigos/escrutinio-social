@@ -1,3 +1,7 @@
 from django.contrib import admin
 
-# Register your models here.
+from core.models import Eleccion, Opcion
+
+
+admin.site.register(Eleccion)
+admin.site.register(Opcion)

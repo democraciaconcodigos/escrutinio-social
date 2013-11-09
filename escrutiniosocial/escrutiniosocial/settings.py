@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.weibo',
     'bootstrap_toolkit',
     'south',
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -103,7 +104,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
-# import pdb; pdb.set_trace()
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'escrutiniosocial', "static_files")
 STATICFILES_DIRS = (
