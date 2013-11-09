@@ -16,7 +16,7 @@ python-apt==0.8.8ubuntu6
 python-dateutil==2.2
 python-debian==0.1.21-nmu2ubuntu1
 python-openid==2.2.5
-requests==1.1.0
+requests==2.0.1
 requests-oauthlib==0.4.0
 six==1.2.0
 ssh-import-id==3.14
