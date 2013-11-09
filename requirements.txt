@@ -5,6 +5,9 @@ distribute==0.6.34
 django-allauth==0.14.1
 django-bootstrap-toolkit==2.15.0
 django-tastypie==0.10.0
+django-extensions==1.2.5
+factory-boy==2.2.1
+ipython==1.1.0
 oauthlib==0.6.0
 pep8==1.4.6
 pyflakes==0.7.3
@@ -12,6 +15,5 @@ python-dateutil==2.2
 python-openid==2.2.5
 requests==2.0.1
 requests-oauthlib==0.4.0
-six==1.2.0
+six==1.4.1
 wsgiref==0.1.2
-django-extensions
