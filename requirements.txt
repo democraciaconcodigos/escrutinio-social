@@ -23,7 +23,12 @@ ssh-import-id==3.14
 urllib3==1.5
 wsgiref==0.1.2
 <<<<<<< HEAD
-zope.interface==4.0.5
+<<<<<<< HEAD
 =======
+>>>>>>> origin/api
+zope.interface==4.0.5
 django-extensions
+<<<<<<< HEAD
 >>>>>>> mgaitan/models
+=======
+>>>>>>> origin/api

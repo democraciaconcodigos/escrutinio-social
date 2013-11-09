@@ -60,7 +60,11 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.weibo',
     'core',
     'south',
+<<<<<<< HEAD
     'tastypie',	
+=======
+    'tastypie'
+>>>>>>> origin/api
     'django_extensions',
 )
 
