@@ -5,6 +5,20 @@ escrutiniosocial
 
 Una aplicación web para validar colaborativamente el escrutinio provisorio
 
+
+Para cargar datos oficiales a partir de los csv publicados:
+
+1. Cargar información de provincias y departamentos:
+    $ python manage.py cargar_provincias electoral-2013-departamentos.csv
+
+2. Cargar información de partidos:
+    $ python manage.py cargar_partidos electoral-2013-partidos.csv
+
+3. Cargar datos de resultados:
+    $ python manage.py cargar_eleccion "Diputados nacionales" electoral-2013-diputados_nacionales.csv
+
+
+
 Para colaborar con el proyecto:
 
 1. Forkear el proyecto en tu cuenta de github
@@ -33,18 +47,3 @@ Deletes the "mybranch" branch
 
 visit https://help.github.com/articles/using-pull-requests
 to learn how to send your contribution to the original repo.
-
-
-
-
-Para cargar datos oficiales a partir de los csv publicados:
-
-1. Cargar información de provincias y departamentos:
-    $ python manage.py cargar_provincias electoral-2013-departamentos.csv
-
-2. Cargar información de partidos:
-    $ python manage.py cargar_partidos electoral-2013-partidos.csv
-
-3. Cargar datos de resultados:
-    $ python manage.py cargar_eleccion "Diputados nacionales" electoral-2013-diputados_nacionales.csv
-
