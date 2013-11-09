@@ -1,0 +1,9 @@
+Django==1.6
+South==0.8.2
+argparse==1.2.1
+django-allauth==0.14.1
+oauthlib==0.6.0
+python-openid==2.2.5
+requests==2.0.1
+requests-oauthlib==0.4.0
+wsgiref==0.1.2
