@@ -12,9 +12,12 @@ class Provincia(models.Model):
 
 
 class Municipio(models.Model):
-    dne_id = models.PositiveIntegerField(primary_key=True)
+    dne_id = models.PositiveIntegerField()
     provincia = models.ForeignKey(Provincia)
     nombre = models.CharField(max_length=100)
+
+    class Meta:
+        unique_together = ('dne_id', 'provincia')
 
     def __unicode__(self):
         return self.nombre
@@ -50,8 +53,8 @@ class Mesa(models.Model):
 
 
 class Opcion(models.Model):
-    nombre = models.CharField(max_length=100, unique=True)
     dne_id = models.PositiveIntegerField(primary_key=True)
+    nombre = models.CharField(max_length=100)
 
     def __unicode__(self):
         return self.nombre
@@ -59,21 +62,22 @@ class Opcion(models.Model):
 
 class Eleccion(models.Model):
     nombre = models.CharField(max_length=50)
-    fecha = models.DateTimeField()
+    fecha = models.DateTimeField(blank=True, null=True)
     opciones = models.ManyToManyField(Opcion)
 
     def __unicode__(self):
-        return "%s - %s" % (self.nombre, self.fecha.strftime('%d/%m/%Y'))
+        return self.nombre
 
 
 class AbstractVotoMesa(models.Model):
+    eleccion = models.ForeignKey(Eleccion)
     mesa = models.ForeignKey(Mesa)
     opcion = models.ForeignKey(Opcion)
     votos = models.IntegerField()
 
     class Meta:
         abstract = True
-        unique_together = ('mesa', 'opcion')
+        unique_together = ('eleccion', 'mesa', 'opcion')
 
     def buscar_imagen(self):
         r = request.get(u"%s/%s/%s/%s" % (settings.URL_TELEGRAMAS, circuito.numero, mesa.numero, opcion.dne_id))
@@ -81,7 +85,7 @@ class AbstractVotoMesa(models.Model):
         print r.content 
 
     def __unicode__(self):
-        return u"%s: %d" % (self.opcion, self.votos)
+        return u"%s - %s: %d" % (self.eleccion, self.opcion, self.votos)
 
 
 class VotoMesaOficial(AbstractVotoMesa):
