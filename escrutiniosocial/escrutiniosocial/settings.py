@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+
     # external apps
     'allauth',
     'allauth.account',
@@ -60,6 +61,7 @@ INSTALLED_APPS = (
     'core',
     'south',
     'tastypie'
+    'django_extensions',
 )
 
 MIDDLEWARE_CLASSES = (
