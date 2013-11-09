@@ -26,6 +26,11 @@ class MesaResource(ModelResource):
 		queryset = Mesa.objects.all()
 		resource_name = 'mesa'
 
+class OpcionResource(ModelResource):
+	class Meta:
+		queryset = Opcion.objects.all()
+		resource_name = 'opcion'
+
 class EleccionResource(ModelResource):
 	class Meta:
 		queryset = Eleccion.objects.all()
