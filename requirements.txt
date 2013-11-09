@@ -1,8 +1,6 @@
 Django==1.6
-Landscape-Client==12.12
 PAM==0.4.2
 South==0.8.2
-Twisted-Core==12.3.0
 apt-xapian-index==0.45
 argparse==1.2.1
 chardet==2.0.1
