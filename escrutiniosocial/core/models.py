@@ -1,6 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Sum
-from django.contrib.auth.models import User
 
 
 class Provincia(models.Model):
@@ -21,7 +21,7 @@ class Municipio(models.Model):
 
 
 class Circuito(models.Model):
-    municipio = models.ForeignKey('Municipio')
+    municipio = models.ForeignKey(Municipio)
     numero = models.CharField(max_length=100)
 
     def __unicode__(self):
@@ -30,14 +30,14 @@ class Circuito(models.Model):
 
 class LugarVotacion(models.Model):
     dne_id = models.PositiveIntegerField(primary_key=True)
-    circuito = models.ForeignKey('Circuito')
+    circuito = models.ForeignKey(Circuito)
     nombre = models.CharField(max_length=100)
     direccion = models.CharField(max_length=100)
 
 
 class Mesa(models.Model):
-    circuito = models.ForeignKey('Circuito')
-    lugarvotacion = models.ForeignKey('LugarVotacion', null=True)
+    circuito = models.ForeignKey(Circuito)
+    lugarvotacion = models.ForeignKey(LugarVotacion, null=True)
     numero = models.IntegerField(max_length=100)
     url = models.URLField(null=True)
 
@@ -49,26 +49,26 @@ class Mesa(models.Model):
         return u"Mesa %s (%s)" % (self.numero, self.circuito)
 
 
-class Eleccion(models.Model):
-    nombre = models.CharField(max_length=50)
-    fecha = models.DateTimeField()
-
-    def __unicode__(self):
-        return "%s - %s" % (self.nombre, self.fecha.strftime('%d/%m/%Y'))
-
-
 class Opcion(models.Model):
-    # partido, blanco, etc.
-    eleccion = models.ForeignKey(Eleccion, related_name='opciones')
     nombre = models.CharField(max_length=100, unique=True)
+    dne_id = models.PositiveIntegerField(primary_key=True)
 
     def __unicode__(self):
         return self.nombre
 
 
+class Eleccion(models.Model):
+    nombre = models.CharField(max_length=50)
+    fecha = models.DateTimeField()
+    opciones = models.ManyToManyField(Opcion)
+
+    def __unicode__(self):
+        return "%s - %s" % (self.nombre, self.fecha.strftime('%d/%m/%Y'))
+
+
 class AbstractVotoMesa(models.Model):
-    mesa = models.ForeignKey('Mesa')
-    opcion = models.ForeignKey('Opcion')
+    mesa = models.ForeignKey(Mesa)
+    opcion = models.ForeignKey(Opcion)
     votos = models.IntegerField()
 
     class Meta:
@@ -89,5 +89,3 @@ class VotoMesaSocial(AbstractVotoMesa):
 
 class VotoMesaOCR(AbstractVotoMesa):
     pass
-
-

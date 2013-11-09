@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import datetime
+
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -50,6 +50,13 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'core', ['Mesa'])
 
+        # Adding model 'Opcion'
+        db.create_table(u'core_opcion', (
+            ('nombre', self.gf('django.db.models.fields.CharField')(unique=True, max_length=100)),
+            ('dne_id', self.gf('django.db.models.fields.PositiveIntegerField')(primary_key=True)),
+        ))
+        db.send_create_signal(u'core', ['Opcion'])
+
         # Adding model 'Eleccion'
         db.create_table(u'core_eleccion', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
@@ -58,13 +65,14 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'core', ['Eleccion'])
 
-        # Adding model 'Opcion'
-        db.create_table(u'core_opcion', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('eleccion', self.gf('django.db.models.fields.related.ForeignKey')(related_name='opciones', to=orm['core.Eleccion'])),
-            ('nombre', self.gf('django.db.models.fields.CharField')(unique=True, max_length=100)),
+        # Adding M2M table for field opciones on 'Eleccion'
+        m2m_table_name = db.shorten_name(u'core_eleccion_opciones')
+        db.create_table(m2m_table_name, (
+            ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True)),
+            ('eleccion', models.ForeignKey(orm[u'core.eleccion'], null=False)),
+            ('opcion', models.ForeignKey(orm[u'core.opcion'], null=False))
         ))
-        db.send_create_signal(u'core', ['Opcion'])
+        db.create_unique(m2m_table_name, ['eleccion_id', 'opcion_id'])
 
         # Adding model 'VotoMesaOficial'
         db.create_table(u'core_votomesaoficial', (
@@ -129,11 +137,14 @@ class Migration(SchemaMigration):
         # Deleting model 'Mesa'
         db.delete_table(u'core_mesa')
 
+        # Deleting model 'Opcion'
+        db.delete_table(u'core_opcion')
+
         # Deleting model 'Eleccion'
         db.delete_table(u'core_eleccion')
 
-        # Deleting model 'Opcion'
-        db.delete_table(u'core_opcion')
+        # Removing M2M table for field opciones on 'Eleccion'
+        db.delete_table(db.shorten_name(u'core_eleccion_opciones'))
 
         # Deleting model 'VotoMesaOficial'
         db.delete_table(u'core_votomesaoficial')
@@ -192,7 +203,8 @@ class Migration(SchemaMigration):
             'Meta': {'object_name': 'Eleccion'},
             'fecha': ('django.db.models.fields.DateTimeField', [], {}),
             u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'nombre': ('django.db.models.fields.CharField', [], {'max_length': '50'})
+            'nombre': ('django.db.models.fields.CharField', [], {'max_length': '50'}),
+            'opciones': ('django.db.models.fields.related.ManyToManyField', [], {'to': u"orm['core.Opcion']", 'symmetrical': 'False'})
         },
         u'core.lugarvotacion': {
             'Meta': {'object_name': 'LugarVotacion'},
@@ -217,8 +229,7 @@ class Migration(SchemaMigration):
         },
         u'core.opcion': {
             'Meta': {'object_name': 'Opcion'},
-            'eleccion': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'opciones'", 'to': u"orm['core.Eleccion']"}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'dne_id': ('django.db.models.fields.PositiveIntegerField', [], {'primary_key': 'True'}),
             'nombre': ('django.db.models.fields.CharField', [], {'unique': 'True', 'max_length': '100'})
         },
         u'core.provincia': {
