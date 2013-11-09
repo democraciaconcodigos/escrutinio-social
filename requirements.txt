@@ -6,6 +6,8 @@ django-allauth==0.14.1
 django-bootstrap-toolkit==2.15.0
 django-tastypie==0.10.0
 oauthlib==0.6.0
+pep8==1.4.6
+pyflakes==0.7.3
 python-dateutil==2.2
 python-openid==2.2.5
 requests==2.0.1
