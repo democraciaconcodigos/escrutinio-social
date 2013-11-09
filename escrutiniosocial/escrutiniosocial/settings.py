@@ -59,6 +59,10 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.weibo',
     'core',
     'south',
+    'django_extensions',
+
+    # out apps
+    'core',
 )
 
 MIDDLEWARE_CLASSES = (
