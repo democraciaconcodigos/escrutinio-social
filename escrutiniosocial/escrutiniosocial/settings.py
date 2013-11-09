@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
+    # external apps
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -57,6 +58,7 @@ INSTALLED_APPS = (
     # 'allauth.socialaccount.providers.vk',
     # 'allauth.socialaccount.providers.weibo',
     'core',
+    'south',
 )
 
 MIDDLEWARE_CLASSES = (
