@@ -1,0 +1,1 @@
+escrutiniosocial/escrutiniosocial/settings.py:148: 'from local_settings import *' used; unable to detect undefined names

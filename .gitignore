@@ -19,6 +19,8 @@ develop-eggs
 lib
 lib64
 __pycache__
+escrutiniosocial/escrutiniosocial/local_settings.py
+escrutiniosocial/escrutiniosocial/static_files/
 
 # Installer logs
 pip-log.txt

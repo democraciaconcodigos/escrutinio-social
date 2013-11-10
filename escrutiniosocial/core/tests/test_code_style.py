@@ -5,6 +5,7 @@ import sys
 
 from collections import defaultdict
 
+from django.conf import settings
 from django.test import TestCase
 from pyflakes.scripts.pyflakes import checkPath
 
@@ -58,7 +59,15 @@ class PyflakesAnalysisTestCase(TestCase):
             self._run_pyflakes_analysis(package)
 
         errors = sys.stdout.getvalue().splitlines()
-        self.assertEqual(errors, [], '\n'.join(errors))
+        with open(settings.PYFLAKES_IGNORE_FILE) as f:
+            ignores = map(str.strip, f.readlines())
+
+        for error in errors:
+            if any(i in error for i in ignores):
+                errors.remove(error)
+
+        msg = 'Please fix the following pyflakes errors:\n%s'
+        self.assertEqual(errors, [], msg % '\n'.join(errors))
 
     def _run_pyflakes_analysis(self, package):
         package_path = os.path.dirname(package.__file__)

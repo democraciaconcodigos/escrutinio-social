@@ -20,11 +20,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '_ib)l+#pn-5sjt2g(xzxlq-0!7f&e0gq=ue-q)9g**#*1236uo'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['190.111.250.244', 'recontando.com.ar']
 
 
 # Application definition
@@ -93,7 +93,7 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-ar'
 
 TIME_ZONE = 'UTC'
 
@@ -108,9 +108,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'escrutiniosocial', "static_files")
+STATIC_ROOT = os.path.join(BASE_DIR, 'escrutiniosocial', 'static_files')
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'escrutiniosocial', "static"),
+    os.path.join(BASE_DIR, 'escrutiniosocial', 'static'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -140,4 +140,11 @@ SITE_ID = 1
 LOGIN_REDIRECT_URL = 'home'
 
 URL_TELEGRAMAS = 'http://127.0.0.1/'
-LANGUAGE_CODE = 'es-ar'
+
+PYFLAKES_IGNORE_FILE = os.path.join(
+    BASE_DIR, 'core', 'tests', 'pyflakes-ignore.txt')
+
+try:
+    from local_settings import *
+except:
+    pass
