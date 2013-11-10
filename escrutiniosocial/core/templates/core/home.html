@@ -1,14 +1,15 @@
-{% extends "index.html" %}
+{% extends "base.html" %}
 {% load staticfiles %}
+
 {% block content %}
-<h2>Ingrese el número {{ numero_random }}</h2>
+<h2>Ingrese el número que ve abajo</h2>
 <div class="row">
     <div class="col-lg-3">
     </div>
     <div class="col-lg-6">
         <form action="main.html" method="POST">
             <div class="img">
-                <img src="{% static "img/1.png" %}" alt="dato">
+                <img src="{% static "escrutiniosocial/img/1.png" %}" alt="dato">
             </div>
             <div class="userInput">
                 <input type="text" value="" name="dato" id="dato" autocomplete="off"/>
@@ -20,4 +21,3 @@
     </div>
 </div>
 {% endblock content %}
-
