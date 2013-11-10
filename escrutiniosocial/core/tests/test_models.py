@@ -1,6 +1,5 @@
 from django.test import TestCase
 
-from core.models import Opcion
 from core.factories import EleccionFactory, MesaFactory
 
 
