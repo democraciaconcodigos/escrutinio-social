@@ -8,11 +8,12 @@ from collections import defaultdict
 from django.test import TestCase
 from pyflakes.scripts.pyflakes import checkPath
 
-import escrutiniosocial
+import api
 import core
+import escrutiniosocial
 
 
-PACKAGES = [escrutiniosocial, core]
+PACKAGES = [api,  core, escrutiniosocial]
 
 
 class Pep8ConformanceTestCase(TestCase):
