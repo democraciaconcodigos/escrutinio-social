@@ -32,14 +32,32 @@ En la wiki_ desarrollamos documentación (tanto técnica como no técnica).
 .. _wiki: https://github.com/democraciaconcodigos/escrutiniosocial/wiki
 
 
-Entorno de desarrollo
+Entorno de desarrollo con Docker
+---------------------
+
+Este es un proyecto basado en Django y cuenta con la configuracion de docker para levantar los servicios en contenedores.
+
+Para levantar el proyecto necesitamos contar con docker (https://docs.docker.com/engine/installation/) y docker-compose (https://docs.docker.com/compose/install/).
+
+  `Se recomienda seguir los pasos post instalación para poder ejecutar docker sin utilizar el usuario root.`
+
+Una vez instaladas las dependencias debemos entrar en la carpeta de docker y ejecutar `docker-compose up`.
+
+.. code:: bash
+
+  cd docker
+  docker-compose up
+
+Luego de finalizado el proceso podrán acceder a través de `http://localhost:8000/`.
+
+Un superusuario ``admin`` con clave ``admin`` se habrá cargado
+
+Entorno de desarrollo - Instalación tradicional
 ---------------------
 
 Es un proyecto basado en Django. Requiere Python 3.6 y Postgresql.
-
-
 Podés ver este `tutorial <https://tutorial.djangogirls.org/es/django_installation/>`_
-para instrucciones detalladas.
+para instrucciones detalladas de como instalar Django con python 3.6.
 
 1. Crear un virtualenv
 2. ``pip install -r requirements.txt``
@@ -50,14 +68,3 @@ para instrucciones detalladas.
 6. ``python manage.py runserver``
 
 Un superusuario ``admin`` con clave ``admin`` se habrá cargado
-
-
-
-
-
-
-
-
-
-
-
