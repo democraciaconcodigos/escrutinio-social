@@ -1,0 +1,108 @@
+{% extends "fiscales/base.html" %}
+
+
+{% block title %}Resultados{% endblock %}
+{% block page_title %}Resultados{% endblock %}
+
+    {% block sidenav_items %}
+
+
+
+
+
+
+        {% comment %}
+        <li class="active">
+            <ul class="collapsible collapsible-accordion">
+                <li>
+                    <a href="{{ module.index_url }}" class="collapsible-header active">{{ module.verbose_name }}{{ module.icon|safe }}</a>
+                    <div class="collapsible-body" style="display:block">
+                        <ul>
+                            <li><a href="{% url 'prensa:persona_list' %}">Personas</a></li>
+                            <li><a href="{% url 'prensa:medio_list' %}">Medios</a></li>
+                            <li><a href="{% url 'prensa:programa_list' %}">Programas/Secciones</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </li>
+
+        {% endcomment %}
+
+
+        <li {% if not request.META.QUERY_STRING %} class="active"{% endif %}>
+            <a href="{{ url }}" class="collapsible-header" data-turbolinks="false">Provincia</a>
+        </li>
+
+
+        {% for seccion in secciones %}
+
+
+            <li {% if seccion == menu_activo.0 %} class="active"{% endif %}>
+            <ul class="collapsible collapsible-accordion">
+                <li>
+                    <a href="{% url "resultados" %}?seccion={{ seccion.id }}" class="collapsible-header active">{{ module.verbose_name }}{{ seccion }}  </a>
+                    <div class="collapsible-body" style="display:block">
+                        <ul>
+                            {% for circuito in seccion.circuitos.all %}
+
+                              <li {% if circuito == menu_activo.1  %} class="active"{% endif %}>
+                                <a href="{% url "resultados" %}?circuito={{ circuito.id }}">{{ circuito }}</a>
+                              </li>
+
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+          </li>
+
+          {% endfor %}
+
+
+        {% endblock sidenav_items %}
+
+
+{% block left-panel %}
+
+        <div class="card">
+        <div class="card-content">
+
+                {% for eleccion, resultados in resultados.items %}
+
+
+                <h5> {{ eleccion }}</h5>
+              <table class="bordered" style="font-size: 0.7em">
+              <tr>
+                <th title="Electores"><i class="small material-icons">person_outline</i></th>
+                <th title="Escrutados"><i class="small material-icons">person</i></th>
+                <th title="Positivos"><i class="small material-icons">person_add</i></th>
+                <th title="Participación"><i class="small material-icons">timeline</i></th>
+              </tr>
+              <tr>
+                <td title="Electores">{{ resultados.electores}} </td>
+                <td title="Escrutados">{{ resultados.escrutados }} </td>
+                <td title="Positivos">{{ resultados.positivos}}</td>
+                <td title="Participación">{{ resultados.participacion}} %</td>
+              </tr>
+          </table>
+
+          {{ resultados.table }}
+                  {% with resultados.tabla as resultados %}
+
+                    {% include "elecciones/tabla_resultados.html" with responsive=True incluir_votos=True%}
+
+                  {% endwith %}
+
+
+
+                {% endfor %}
+
+
+
+       </div>
+
+
+    </div>
+
+{% endblock left-panel %}

@@ -1,0 +1,34 @@
+{% extends "material/frontend/base_site.html" %}
+
+{% block page_title %}Fiscal digital{% endblock %}
+
+
+        {% block sidenav_items %}
+
+        {% url 'inicio' as url %}
+        <li {% if url in request.path %} class="active"{% endif %}>
+            <a href="{{ url }}" class="collapsible-header" data-turbolinks="false">Mis actas<i class="material-icons">toc</i></a>
+        </li>
+
+
+        {% url 'mis-datos' as url %}
+        <li {% if url in request.path %} class="active"{% endif %}>
+            <a href="{{ url }}" class="collapsible-header" data-turbolinks="false">Mis datos<i class="material-icons">tag_faces</i></a>
+        </li>
+
+
+        <li>
+            <a href="{% url 'logout' %}" class="collapsible-header"  data-turbolinks="false">Cerrar sesión<i class="material-icons">exit_to_app</i></a>
+        </li>
+
+        {% endblock sidenav_items %}
+
+
+
+{% block content %}
+<div class="left-panel">
+{% block left-panel %}
+{% endblock left-panel %}
+</div>
+{% block right-panel %}{% endblock right-panel %}
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "fiscales/base.html" %}
+
+
+{% block title %}Mis actas{% endblock %}
+{% block page_title %}Mis actas{% endblock %}
+
+
+{% block left-panel %}
+
+        <div class="card">
+        <div class="card-content">
+
+              {% if object.asignaciones_pendientes.exists %}
+              <div class="card-title">Actas de mesas asignadas para cargar </div>
+
+              <div class="collection">
+                {% for asignacion in object.asignaciones_pendientes.all %}
+                    <a href="{{ asignacion.get_absolute_url }}" class="collection-item">Nº {{ asignacion.mesa.numero }}</a>
+                {% endfor %}
+              </div>
+              {% else %}
+              <div class="card-title">En este momento no tenés actas pendientes asignadas.</div>
+              <p> Volvé en unos minutos, gracias!</p>
+              {% endif %}
+
+       </div>
+
+
+    </div>
+
+{% endblock left-panel %}

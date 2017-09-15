@@ -1,0 +1,21 @@
+{% extends 'material/frontend/base.html' %}
+{% load i18n static %}
+{% load google_analytics %}
+{% load staticfiles %}
+{% block extrahead %}
+<style type="text/css">
+    .registration .sidebar {
+        opacity: .90
+    }
+</style>
+{% google_analytics %}
+{% endblock %}
+
+
+{% block sidenav_header %}
+<li>
+    <div class="card-image">
+      <img src="{% static 'img/corner.png' %}" alt="" class="responsive-img"/>
+    </div>
+</li>
+{% endblock %}

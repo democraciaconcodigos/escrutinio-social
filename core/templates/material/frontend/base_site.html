@@ -1,0 +1,20 @@
+{% extends 'material/frontend/base.html' %}
+{% load staticfiles %}
+{% load hijack_tags %}
+
+
+
+ {% block head %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{% static 'hijack/hijack-styles.css' %}" />
+ {% endblock %}
+
+ {% block body %}
+ {% hijack_notification %}
+ {{ block.super }}
+ {% endblock %}
+
+{% load i18n static %}
+
+{% block title %}Escrutinio Social{% endblock %}
+{% block page_title %}Escrutinio Social{% endblock %}

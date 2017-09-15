@@ -1,0 +1,85 @@
+{% extends "fiscales/base.html" %}
+{% load i18n material_form material_frontend %}
+
+{% block breadcrumbs_items %}
+<a href="{{ object.get_absolute_url }}">{{ object }}</a>
+<a class="active">Acta</a>
+{% endblock %}
+
+
+{% block extrahead %}
+    <style type="text/css">
+
+.left-panel {
+  flex-basis: 50%;
+  margin-left: 0.375rem; }
+  .left-panel.wide {
+    flex-basis: 100%;
+    margin-right: 0.375rem; }
+  .left-panel > .card {
+    margin-bottom: 0.375rem; }
+
+.right-panel {
+  flex-basis: 50%;
+  min-width: 300px;
+  margin-left: 0.375rem;
+  margin-right: 0.375rem; }
+  .right-panel > .card {
+    margin-bottom: 0.5rem; }
+
+@media only screen and (max-width: 993px) {
+  .left-panel {
+    flex-basis: 100%;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0; }
+  .left-panel > .card {
+    margin-top: 1px; }
+
+    </style>
+{% endblock %}
+
+
+{% block page_title %}Cargar Acta {% endblock %}
+
+{% block left-panel %}
+    <div class="card">
+
+       <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="card-content">
+            <div class="card-title"> Mesa {{ object.numero }}</div>
+
+            {{ formset.management_form }}
+            {% for form in formset %}
+                {% form %}{% endform %}
+            {% endfor %}
+
+        </div>
+
+
+
+        <div class="card-action">
+            <div class="right-align">
+              <button type="submit" class="waves-effect waves-light btn white-text" tabindex="10" >{% trans 'Save' %}</button>
+            </div>
+        </div>
+
+       </form>
+
+    </div>
+{% endblock left-panel %}
+
+{% block right-panel %}
+    <div class="card">
+
+
+        <div class="card-content">
+
+           <img class="responsive-img" src="http://via.placeholder.com/700x960?text=foto telegrama">
+
+        </div>
+
+    </div>
+{% endblock right-panel %}

@@ -1,0 +1,24 @@
+{% extends "admin/base.html" %}
+{% load i18n static %}
+
+{% block title %}Escrutinio Social | Panel de Administración {% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Escrutinio Social</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+
+{% block userlinks %}
+    <a href="{% url 'resultados' %}">Resultados</a> /
+
+    <a href="{% url 'admin:fiscales_voluntario_changelist' %}">Voluntarios</a> /
+
+    <a href="{% url 'admin:elecciones_lugarvotacion_changelist' %}">Escuelas</a> /
+
+    {% if user.has_usable_password %}
+    <a href="{% url 'admin:password_change' %}">{% trans 'Change password' %}</a> /
+    {% endif %}
+    <a href="{% url 'admin:logout' %}">{% trans 'Log out' %}</a>
+{% endblock %}
