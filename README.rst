@@ -1,13 +1,11 @@
-Escrutinio ciudadano
-====================
+Escrutinio Social
+=================
 
-Una plataforma para un recuento provisorio paralelo basado en la colaboracion de voluntarios.
+Una plataforma web para un recuento provisorio de resultados electorales basado en la colaboración de voluntari@s.
 
-Está basado en el código de Carreros_ e inspirado en la idea de `escrutinio social`_,
+Es una inciativa de `Open Data Córdoba <https://github.com/OpenDataCordoba>`_ junto a diversas organizaciones
+sociales y políticas, con el fin de incrementar la transparencia y fortalecer nuestra democracia.
 
-
-.. _Carreros: https://github.com/concristina/carreros
-.. _Escrutinio Social: https://github.com/democraciaconcodigos/escrutiniosocial
 
 Entorno de desarrollo
 ---------------------
