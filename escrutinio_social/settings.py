@@ -216,7 +216,7 @@ DATABASES = {
 }
 
 # set yours in local_settings.py
-GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-XXXXXX-Y'
+GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-123456-7'
 
 try:
     from .local_settings import *

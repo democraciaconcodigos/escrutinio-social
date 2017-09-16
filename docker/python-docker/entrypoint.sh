@@ -1,22 +1,22 @@
 #!/bin/bash
 
-if [ ! -f /project/escrutiniociudadano/local_settings.py ]; then
-  cat /tmp/local-settings-docker.py >> /project/escrutiniociudadano/local_settings.py
+if [ ! -f /project/escrutinio_social/local_settings.py ]; then
+  cat /tmp/local-settings-docker.py >> /project/escrutinio_social/local_settings.py
 else
-  if ! cat /project/escrutiniociudadano/local_settings.py | grep "DATABASES"; then
-    echo "DATABASES = {" >> /project/escrutiniociudadano/local_settings.py
-    echo "    'default': {" >> /project/escrutiniociudadano/local_settings.py
-    echo "        'ENGINE': 'django.db.backends.postgresql'," >> /project/escrutiniociudadano/local_settings.py
-    echo "        'NAME': 'escrutiniociudadano'," >> /project/escrutiniociudadano/local_settings.py
-    echo "        'USER': 'escrutinio'," >> /project/escrutiniociudadano/local_settings.py
-    echo "        'PASSWORD': 'development'," >> /project/escrutiniociudadano/local_settings.py
-    echo "        'HOST': 'db'," >> /project/escrutiniociudadano/local_settings.py
-    echo "        'PORT': '5432'," >> /project/escrutiniociudadano/local_settings.py
-    echo "    }" >> /project/escrutiniociudadano/local_settings.py
-    echo "}" >> /project/escrutiniociudadano/local_settings.py
+  if ! cat /project/escrutinio_social/local_settings.py | grep "DATABASES"; then
+    echo "DATABASES = {" >> /project/escrutinio_social/local_settings.py
+    echo "    'default': {" >> /project/escrutinio_social/local_settings.py
+    echo "        'ENGINE': 'django.db.backends.postgresql'," >> /project/escrutinio_social/local_settings.py
+    echo "        'NAME': 'escrutinio_social'," >> /project/escrutinio_social/local_settings.py
+    echo "        'USER': 'escrutinio'," >> /project/escrutinio_social/local_settings.py
+    echo "        'PASSWORD': 'development'," >> /project/escrutinio_social/local_settings.py
+    echo "        'HOST': 'db'," >> /project/escrutinio_social/local_settings.py
+    echo "        'PORT': '5432'," >> /project/escrutinio_social/local_settings.py
+    echo "    }" >> /project/escrutinio_social/local_settings.py
+    echo "}" >> /project/escrutinio_social/local_settings.py
   fi
-  if ! cat /project/escrutiniociudadano/local_settings.py | grep "GOOGLE_ANALYTICS_PROPERTY_ID"; then
-    echo "GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-345678-2'" >> /project/escrutiniociudadano/local_settings.py
+  if ! cat /project/escrutinio_social/local_settings.py | grep "GOOGLE_ANALYTICS_PROPERTY_ID"; then
+    echo "GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-345678-2'" >> /project/escrutinio_social/local_settings.py
   fi
 fi
 
