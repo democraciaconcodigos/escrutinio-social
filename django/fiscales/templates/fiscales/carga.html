@@ -8,6 +8,15 @@
 
 
 {% block extrahead %}
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static "fiscales/better-simple-slideshow-gh-pages/css/simple-slideshow-styles.css" %}" />
+    <script>
+        $(document).ready(function() {
+            makeBSS('.slideshow', {fullScreen: true});
+        });
+    </script>
+    <script type="text/javascript" src="{% static "fiscales/better-simple-slideshow-gh-pages/js/better-simple-slideshow.min.js" %}"></script>
     <style type="text/css">
 
 .left-panel {
@@ -75,10 +84,13 @@
     <div class="card">
 
 
-        <div class="card-content">
-
-           <img class="responsive-img" src="http://via.placeholder.com/700x960?text=foto telegrama">
-
+        <div class="bss-slides num2 slideshow">
+            {% for documento in documentos %}
+                <figure>
+                    <figcaption>{{ documento.tipo_acta }}</figcaption>
+                    <img src="http://via.placeholder.com/700x960?text=TODO: Get photo path" />
+                </figure>
+            {% endfor %}
         </div>
 
     </div>

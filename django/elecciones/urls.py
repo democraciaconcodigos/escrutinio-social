@@ -2,9 +2,15 @@
 from django.conf.urls import url
 from . import views
 from fancy_cache import cache_page
+from rest_framework import routers, serializers
 
+from rest_framework_jwt.views import obtain_jwt_token
 
 cached = cache_page(3600 * 24 * 7)
+
+router = routers.DefaultRouter()
+router.register('mesa', views.MesaViewSet)
+router.register('mesaDocumento', views.MesaDocumentoViewSet)
 
 urlpatterns = [
 
@@ -17,4 +23,7 @@ urlpatterns = [
     # url('^mapa/(?P<elecciones_slug>\w+)/resultados.geojson$', cached(views.ResultadosOficialesGeoJSON.as_view()), name='resultados-geojson'),
 
     url('^resultados/', cached(views.Resultados.as_view()), name='resultados'),
+    url(r'^login', obtain_jwt_token),
 ]
+
+urlpatterns += router.urls

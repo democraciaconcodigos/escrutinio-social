@@ -55,6 +55,9 @@ INSTALLED_APPS = [
     'djgeojson',
     'leaflet',
 
+    #DRF
+    'rest_framework',
+
     # nuestras apps
     'elecciones',
     'fiscales',
@@ -179,8 +182,13 @@ LEAFLET_CONFIG = {
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAdminUser',
+        'rest_framework.permissions.IsAuthenticated',
     ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
     'PAGE_SIZE': 10
 }
 

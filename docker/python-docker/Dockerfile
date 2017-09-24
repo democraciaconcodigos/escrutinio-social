@@ -6,4 +6,5 @@ RUN mkdir /project
 WORKDIR /project
 ADD local-settings-docker.py /tmp/
 COPY ./entrypoint.sh /
+RUN chmod +x /entrypoint.sh  
 ENTRYPOINT ["/entrypoint.sh"]

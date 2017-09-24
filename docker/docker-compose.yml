@@ -9,7 +9,7 @@ services:
   web:
     build: ./python-docker
     volumes:
-      - ../:/project
+      - ../django/:/project
     ports:
       - "8000:8000"
     depends_on:

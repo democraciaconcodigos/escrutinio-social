@@ -315,8 +315,9 @@ def cargar_resultados(request, asignacion_id):
 
         return redirect('inicio')
 
+    docs = mesa.documentos()
     return render(request, "fiscales/carga.html",
-                  {'formset': formset, 'object': mesa})
+                  {'formset': formset, 'object': mesa, 'documentos': docs})
 
 
 class CambiarPassword(PasswordChangeView):

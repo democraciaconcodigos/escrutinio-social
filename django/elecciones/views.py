@@ -18,7 +18,13 @@ from fiscales.models import  Voluntario, VotoMesaOficial, VotoMesaReportado
 from django.contrib.admin.views.decorators import staff_member_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import user_passes_test
+from rest_framework import viewsets
+from elecciones.serializers import MesaSerializers, MesaDocumentoSerializers
 
+from django.contrib.auth import authenticate
+from rest_framework.response import Response
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 
 class StaffOnlyMixing:
 
@@ -153,3 +159,16 @@ class Resultados(StaffOnlyMixing, TemplateView):
         context['menu_activo'] = self.menu_activo()
         return context
 
+
+class MesaViewSet(viewsets.ModelViewSet):
+   # authentication_classes = (TokenAuthentication,)
+   permission_classes = (IsAuthenticated,)
+   serializer_class = MesaSerializers
+   queryset = Mesa.objects.all()
+
+
+class MesaDocumentoViewSet(viewsets.ModelViewSet):
+   #authentication_classes = (TokenAuthentication,)
+   permission_classes = (IsAuthenticated,)
+   serializer_class = MesaDocumentoSerializers
+   queryset = MesaDocumento.objects.all()

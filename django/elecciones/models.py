@@ -110,7 +110,6 @@ def path_foto_acta(instance, filename):
     _, ext = os.path.splitext(filename)
     return f'actas/{instance.circuito.seccion.numero}/{instance.circuito.numero}/{instance.numero}{ext}'
 
-
 class Mesa(models.Model):
     eleccion = models.ForeignKey('Eleccion')
     circuito = models.ForeignKey('Circuito')
@@ -125,10 +124,30 @@ class Mesa(models.Model):
     foto_acta = models.ImageField(upload_to=path_foto_acta, null=True, blank=True)
     electores = models.PositiveIntegerField(null=True, blank=True)
 
+    def documentos(self):
+        # retorna los documentos asociados a la mesa.
+        return MesaDocumento.objects.filter(mesa=self)
 
     def __str__(self):
         return f"Mesa {self.numero}"
 
+TIPO_ACTA = Choices (
+    'Telegrama', 'Certificado', 'Copia acta', 'Mesa'
+)
+
+def path_foto_documento(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/
+    _, ext = os.path.splitext(filename)
+    return f'actas/{instance.mesa.circuito.seccion.numero}/{instance.mesa.circuito.numero}/{instance.mesa.numero}{ext}'
+
+
+class MesaDocumento(models.Model):
+    mesa = models.ForeignKey('Mesa')
+    tipo_acta = models.CharField(max_length=50, choices=TIPO_ACTA)
+    foto = models.ImageField(upload_to=path_foto_documento, null=True, blank=True)
+
+    def __str__(self):
+        return f"Mesa {self.mesa}"
 
 class Opcion(models.Model):
     orden = models.PositiveIntegerField(help_text='Orden en el acta')
@@ -169,4 +188,3 @@ class Eleccion(models.Model):
 
     def __str__(self):
         return self.nombre
-
