@@ -1,3 +1,4 @@
+from collections import OrderedDict
 from django.http import Http404, HttpResponse
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse, reverse_lazy
@@ -23,6 +24,7 @@ from django.core.mail import send_mail
 from .forms import (
     ContactoInlineFormset,
     MisDatosForm,
+    reporte_formset_factory,
     VotoMesaReportadoFormset,
     ActaMesaModelForm,
     QuieroSerVoluntario1,
@@ -267,13 +269,61 @@ class Inicio(BaseVoluntario):
     template_name = "fiscales/inicio.html"
 
 
-@login_required
-def cargar_resultados(request, asignacion_id):
-    def fix_opciones(formset):
+class CargarResultadosWizardView(LoginRequiredMixin, SessionWizardView):
+
+    template_name = "fiscales/carga.html"
+    form_list = [VotoMesaReportadoFormset]
+
+    def dispatch(self, request, *args, **kwargs):
+
+        self.voluntario = request.user.voluntario
+        self.asignacion = get_object_or_404(
+            AsignacionVoluntario,
+            id=self.kwargs['asignacion_id'], voluntario=self.voluntario
+        )
+        self.categorias = self.asignacion.mesa.categorias.all().order_by('orden')
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, form, **kwargs):
+        context = super().get_context_data(form=form, **kwargs)
+        context['categoria'] = self.get_categoria(self.steps.current)
+        context['opciones'] = self.get_opciones()
+        context['button_tabindex'] = len(context['opciones']) + 1
+        context['mesa'] = self.asignacion.mesa
+        return context
+
+    def get_form_list(self):
+        form_list = OrderedDict()
+        for i, cat in enumerate(self.categorias):
+            formset_cls = reporte_formset_factory(cat.opciones.count())
+            form_list[str(i)] = formset_cls
+        return form_list
+
+    def get_categoria(self, step=None):
+        return self.categorias[int(step or self.steps.first)]
+
+    def get_opciones(self, step=None):
+        return self.get_categoria(step).opciones.order_by('orden')
+
+    def get_form_instance(self, step=None):
+        categoria = self.get_categoria(step)
+        qs = VotoMesaReportado.objects.filter(
+            mesa=self.asignacion.mesa,
+            voluntario=self.voluntario,
+            categoria=categoria)
+        return qs
+
+    def get_form_initial(self, step):
+        categoria = self.get_categoria(step)
+        initial = [{'opcion': o, 'categoria': categoria} for o in categoria.opciones.all()][0:2]
+        return initial
+
+    def get_form(self, step=None, data=None, files=None):
+        formset = super().get_form(step, data, files)
         # hack para dejar sólo la opcion correspondiente a cada fila
         # se podria hacer "disabled" pero ese caso quita el valor del
         # cleaned_data y luego lo exige por ser requerido.
-        for i, (opcion, form) in enumerate(zip(Eleccion.opciones_actuales(), formset), 1):
+        for i, (opcion, form) in enumerate(zip(self.get_opciones(step), formset), 1):
             form.fields['opcion'].choices = [(opcion.id, str(opcion))]
             form.fields['opcion'].widget.attrs['tabindex'] = 99 + i
 
@@ -281,42 +331,19 @@ def cargar_resultados(request, asignacion_id):
             form.fields['votos'].widget.attrs['tabindex'] = i
             if i == 1:
                 form.fields['votos'].widget.attrs['autofocus'] = True
+        return formset
 
-    asignacion = get_object_or_404(AsignacionVoluntario,
-        id=asignacion_id, voluntario=request.user.voluntario
-    )
-    mesa, voluntario = asignacion.mesa, asignacion.voluntario
-    data = request.POST if request.method == 'POST' else None
-    qs = VotoMesaReportado.objects.filter(mesa=mesa, voluntario=voluntario)
-    initial = [{'opcion': o} for o in Eleccion.opciones_actuales()]
-    formset = VotoMesaReportadoFormset(data, queryset=qs, initial=initial)
+    def done(self, form_list, **kwargs):
+        for categoria, formset in zip(self.categorias, form_list):
+            for form in formset:
+                vmr = form.save(commit=False)
+                vmr.mesa = self.asignacion.mesa
+                vmr.voluntario = self.asignacion.voluntario
+                vmr.categoria = categoria
+                vmr.save()
 
-    fix_opciones(formset)
-
-    is_valid = False
-    if qs:
-        formset.convert_warnings = True  # monkepatch
-
-    if request.method == 'POST' or qs:
-        is_valid = formset.is_valid()
-
-    # = Eleccion.objects.last()
-    if is_valid:
-        for form in formset:
-            vmr = form.save(commit=False)
-            vmr.mesa = mesa
-            vmr.voluntario = voluntario
-            vmr.save()
-
-        if formset.warnings:
-            messages.warning(request, 'Guardado con inconsistencias')
-        else:
-            messages.success(request, 'Guardado correctamente')
-
+        messages.success(self.request, 'Datos guardados correctamente')
         return redirect('inicio')
-
-    return render(request, "fiscales/carga.html",
-                  {'formset': formset, 'object': mesa})
 
 
 class CambiarPassword(PasswordChangeView):

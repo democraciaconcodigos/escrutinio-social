@@ -40,29 +40,40 @@
 {% endblock %}
 
 
-{% block page_title %}Cargar Acta {% endblock %}
+{% block page_title %}Cargar Acta de {{ mesa }}{% endblock %}
 
 {% block left-panel %}
     <div class="card">
-
        <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-
         <div class="card-content">
-            <div class="card-title"> Mesa {{ object.numero }}</div>
+            <span class="grey-text text-darken-2">Paso {{ wizard.steps.step1 }} de {{ wizard.steps.count }}</span>
+            <div class="card-title">Resultados para <strong> {{ categoria.cargo }}</strong></div>
 
-            {{ formset.management_form }}
-            {% for form in formset %}
-                {% form %}{% endform %}
-            {% endfor %}
+                    {{ wizard.management_form }}
+                    {{ wizard.form.management_form }}
+
+                    {% for form in wizard.form %}
+                        {% form %}{% endform %}
+                    {% endfor %}
+
 
         </div>
 
 
 
         <div class="card-action">
+
+
+
+
             <div class="right-align">
-              <button type="submit" class="waves-effect waves-light btn white-text" tabindex="10" >{% trans 'Save' %}</button>
+
+               <button class="btn waves-effect waves-light btn white-text" type="submit" tabindex="{{ button_tabindex }}">
+
+                  {% if wizard.steps.step1 < 4 %}Siguiente <i class="material-icons">arrow_forward</i>{% else %}{% trans 'Save' %}{% endif %}
+
+                    </button>
             </div>
         </div>
 

@@ -136,15 +136,15 @@ def borrar_user_para_fiscal(sender, instance=None, **kwargs):
         instance.user.delete()
 
 
-
 class AbstractVotoMesa(models.Model):
     mesa = models.ForeignKey('elecciones.Mesa')
     opcion = models.ForeignKey('elecciones.Opcion')
     votos = models.PositiveIntegerField(null=True)
+    categoria = models.ForeignKey('elecciones.Categoria')
 
     class Meta:
         abstract = True
-        unique_together = ('mesa', 'opcion')
+        unique_together = ('mesa', 'opcion', 'categoria')
 
 
     def __str__(self):
