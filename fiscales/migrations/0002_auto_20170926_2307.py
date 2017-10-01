@@ -6,6 +6,28 @@ from django.db import migrations, models
 import django.db.models.deletion
 
 
+def crear_categoria(apps, schema_editor):
+    # We can't import the Person model directly as it may be a newer
+    # version than this migration expects. We use the historical version.
+    Categoria = apps.get_model('elecciones', 'Categoria')
+    Opcion = apps.get_model('elecciones', 'Opcion')
+    Eleccion = apps.get_model('elecciones', 'Eleccion')
+    Mesa = apps.get_model('elecciones', 'Mesa')
+
+    e, _ = Eleccion.objects.get_or_create(id=1, defaults={'nombre': 'Elecciones Generales 2017'})
+    cat, _ = Categoria.objects.get_or_create(id=1,
+        defaults={
+            'nombre': 'Elecciones a Senador Nacional',
+            'orden': 1,
+            'cargo': 'Senadores Nacionales',
+            'eleccion': e,
+        }
+    )
+    cat.opciones.set(Opcion.objects.all())
+    for m in Mesa.objects.all():
+        m.categorias.set([cat])
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -14,6 +36,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        migrations.RunPython(crear_categoria),
         migrations.AddField(
             model_name='votomesaoficial',
             name='categoria',
