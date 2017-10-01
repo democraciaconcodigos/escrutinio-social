@@ -194,5 +194,5 @@ class Categoria(models.Model):
         verbose_name_plural = 'Categorías elegibles'
 
     def __str__(self):
-        return f'{self.eleccion} - {self.categoria}'
+        return f'{self.eleccion} - {self.nombre}'
 
