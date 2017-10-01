@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db import models
@@ -181,7 +182,7 @@ class Eleccion(models.Model):
 class Categoria(models.Model):
     nombre = models.CharField(max_length=100, blank=True,
         help_text='Nombre descriptivo interno. Ej: Elecciones de Concejales de Tres de Febrero')
-    eleccion = models.ForeignKey('Eleccion')
+    eleccion = models.ForeignKey('Eleccion', related_name='categorias')
     cargo = models.CharField(max_length=50,
         help_text='Nombre del cargo/s elegible. Ej. Senadores Nacionales')
     slug = AutoSlugField(populate_from=['cargo'])
@@ -196,3 +197,19 @@ class Categoria(models.Model):
     def __str__(self):
         return f'{self.eleccion} - {self.nombre}'
 
+    @property
+    @lru_cache(128)
+    def agregaciones(self):
+        opciones = {}
+        for id in self.opciones.order_by('orden').values_list('id', flat=True):
+            opciones[str(id)] = Sum(
+                Case(
+                    When(
+                        opcion__id=id,
+                        categoria__id=self.id,
+                        then=F('votos')
+                    ),
+                output_field=IntegerField()
+                )
+            )
+        return opciones

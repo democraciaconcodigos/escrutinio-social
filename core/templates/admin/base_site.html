@@ -11,7 +11,9 @@
 
 
 {% block userlinks %}
-    <a href="{% url 'resultados' %}">Resultados</a> /
+    {% comment %}
+        <a href="{% url 'resultados' %}">Resultados</a> /
+    {% endcomment %}
 
     <a href="{% url 'admin:fiscales_voluntario_changelist' %}">Voluntarios</a> /
 

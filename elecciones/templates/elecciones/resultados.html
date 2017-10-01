@@ -41,13 +41,13 @@
             <li {% if seccion == menu_activo.0 %} class="active"{% endif %}>
             <ul class="collapsible collapsible-accordion">
                 <li>
-                    <a href="{% url "resultados" %}?seccion={{ seccion.id }}" class="collapsible-header active">{{ module.verbose_name }}{{ seccion }}  </a>
+                    <a href="{% url "resultados" eleccion.slug %}?seccion={{ seccion.id }}" class="collapsible-header active">{{ module.verbose_name }}{{ seccion }}  </a>
                     <div class="collapsible-body" style="display:block">
                         <ul>
                             {% for circuito in seccion.circuitos.all %}
 
                               <li {% if circuito == menu_activo.1  %} class="active"{% endif %}>
-                                <a href="{% url "resultados" %}?circuito={{ circuito.id }}">{{ circuito }}</a>
+                                <a href="{% url "resultados" eleccion.slug %}?circuito={{ circuito.id }}">{{ circuito }}</a>
                               </li>
 
                             {% endfor %}
@@ -65,13 +65,23 @@
 
 {% block left-panel %}
 
-        <div class="card">
-        <div class="card-content">
-
-                {% for eleccion, resultados in resultados.items %}
 
 
-                <h5> {{ eleccion }}</h5>
+      <ul class="tabs">
+        {% for categoria in resultados.keys %}
+          <li class="tab col s3">
+            <a href="#{{categoria.slug}}" {% if forloop.first %}class="active"{% endif %}>{{ categoria.nombre }}</a></li>
+        {% endfor %}
+      </ul>
+
+
+        {% for categoria, tabla_resultados in resultados.items %}
+
+
+        <div id="{{ categoria.slug }}" class="card">
+           <div class="card-content">
+
+                <h5> {{ categoria }}</h5>
               <table class="bordered" style="font-size: 0.7em">
               <tr>
                 <th title="Electores"><i class="small material-icons">person_outline</i></th>
@@ -80,15 +90,14 @@
                 <th title="Participación"><i class="small material-icons">timeline</i></th>
               </tr>
               <tr>
-                <td title="Electores">{{ resultados.electores}} </td>
-                <td title="Escrutados">{{ resultados.escrutados }} </td>
-                <td title="Positivos">{{ resultados.positivos}}</td>
-                <td title="Participación">{{ resultados.participacion}} %</td>
+                <td title="Electores">{{ tabla_resultados.electores}} </td>
+                <td title="Escrutados">{{ tabla_resultados.escrutados }} </td>
+                <td title="Positivos">{{ tabla_resultados.positivos}}</td>
+                <td title="Participación">{{ tabla_resultados.participacion}} %</td>
               </tr>
           </table>
 
-          {{ resultados.table }}
-                  {% with resultados.tabla as resultados %}
+                    {% with tabla_resultados.tabla as resultados %}
 
                     {% include "elecciones/tabla_resultados.html" with responsive=True incluir_votos=True%}
 
@@ -96,13 +105,21 @@
 
 
 
-                {% endfor %}
-
-
-
-       </div>
-
-
-    </div>
+        </div>
+      </div>
+      {% endfor %}
 
 {% endblock left-panel %}
+
+
+  {% block messages %}
+        {{ block.super }}
+
+      <script type="text/javascript">
+        $(document).ready(function(){
+          $('ul.tabs').tabs();
+        });
+
+      </script>
+
+  {% endblock messages %}
