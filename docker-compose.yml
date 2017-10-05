@@ -2,14 +2,16 @@ version: '2'
 services:
   db:
     image: postgres
+    container_name: escrutinio-social-db
     environment:
       - POSTGRES_DB=escrutiniociudadano
       - POSTGRES_USER=escrutinio
       - POSTGRES_PASSWORD=development
   web:
-    build: ./python-docker
+    container_name: escrutinio-social-web
+    build: .
     volumes:
-      - ../:/project
+      - ./:/project
     ports:
       - "8000:8000"
     depends_on:

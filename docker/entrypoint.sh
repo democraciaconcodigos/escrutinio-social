@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! -f /project/escrutinio_social/local_settings.py ]; then
-  cat /tmp/local-settings-docker.py >> /project/escrutinio_social/local_settings.py
+  cat /project/escrutinio_social/docker/local-settings-docker.py >> /project/escrutinio_social/local_settings.py
 else
   if ! cat /project/escrutinio_social/local_settings.py | grep "DATABASES"; then
     echo "DATABASES = {" >> /project/escrutinio_social/local_settings.py
@@ -20,9 +20,6 @@ else
   fi
 fi
 
-echo "Installing required packages" \
- && pip3 install -r /project/requirements.txt \
- && echo "Packages installation finished" \
- && python3.6 /project/manage.py migrate \
+python3.6 /project/manage.py migrate \
  && python3.6 /project/manage.py loaddata fixtures/* \
  && python3.6 /project/manage.py runserver 0.0.0.0:8000 \
