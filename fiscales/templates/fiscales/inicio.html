@@ -11,7 +11,7 @@
         <div class="card-content">
 
               {% if object.asignaciones_pendientes.exists %}
-              <div class="card-title">Actas de mesas asignadas para cargar </div>
+              <div class="card-title">Mesas asignadas para cargar </div>
 
               <div class="collection">
                 {% for asignacion in object.asignaciones_pendientes.all %}

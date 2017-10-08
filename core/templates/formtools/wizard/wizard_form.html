@@ -28,7 +28,7 @@
 
                     <button class="btn" type="submit">
 
-                        {% if wizard.steps.step1 < 4 %}Siguiente <i class="material-icons">arrow_forward</i>{% else %}Confirmar{% endif %}
+                        {% if wizard.steps.step1 < wizard.steps.count %}Siguiente <i class="material-icons">arrow_forward</i>{% else %}Confirmar{% endif %}
 
                     </button>
                 </div>

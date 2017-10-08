@@ -1,4 +1,5 @@
 import os
+from functools import lru_cache
 from django.contrib.auth.models import User
 from django.urls import reverse
 from django.db import models
@@ -9,6 +10,7 @@ from django.template.loader import render_to_string
 from django.utils.safestring import mark_safe
 from django.dispatch import receiver
 from django.db.models.signals import m2m_changed, post_save
+from django_extensions.db.fields import AutoSlugField
 from model_utils.fields import StatusField, MonitorField
 from model_utils import Choices
 
@@ -100,19 +102,32 @@ class LugarVotacion(models.Model):
     def seccion(self):
         return str(self.circuito.seccion)
 
-
     def __str__(self):
         return f"{self.nombre} - {self.circuito}"
 
 
-def path_foto_acta(instance, filename):
+def path_documento(instance, filename):
     # file will be uploaded to MEDIA_ROOT/
     _, ext = os.path.splitext(filename)
-    return f'actas/{instance.circuito.seccion.numero}/{instance.circuito.numero}/{instance.numero}{ext}'
+    path = f'{instance.circuito.seccion.numero}/{instance.circuito.numero}/{instance.tipo}'
+    return f'{path}/{instance.mesa.numero}.{ext}'
+
+
+path_foto_acta = path_documento    # compatibilidad
+
+
+class Documento(models.Model):
+    TIPO = Choices(('acta_oficial', 'Acta oficial'),
+                   ('acta_partidaria', 'Acta Partidaria'),
+                   ('telegrama_oficial', 'Telegrama oficial'))
+    tipo = models.CharField(max_length=50, choices=TIPO)
+    archivo = models.ImageField(upload_to=path_documento, null=True, blank=True)
+    subido_por = models.ForeignKey('auth.User', null=True, blank=True, editable=False)
+    mesa = models.ForeignKey('Mesa')
 
 
 class Mesa(models.Model):
-    eleccion = models.ForeignKey('Eleccion')
+    categorias = models.ManyToManyField('Categoria', help_text='Qué se vota en esta mesa')
     circuito = models.ForeignKey('Circuito')
     lugar_votacion = models.ForeignKey(
         LugarVotacion, verbose_name='Lugar de votacion',
@@ -121,8 +136,6 @@ class Mesa(models.Model):
     numero = models.PositiveIntegerField()
     es_testigo = models.BooleanField(default=False)
 
-    foto_acta = models.ImageField(upload_to=path_foto_acta, null=True, blank=True)
-    foto_acta = models.ImageField(upload_to=path_foto_acta, null=True, blank=True)
     electores = models.PositiveIntegerField(null=True, blank=True)
 
 
@@ -139,6 +152,8 @@ class Opcion(models.Model):
         help_text='Orden en la boleta', null=True, blank=True)
 
     es_partido = models.BooleanField(default=True)
+    obligatorio = models.BooleanField(default=True,
+        help_text='Si se deshabilita, la carga de votos para esta opción no será obligatoria')
     color = models.CharField(max_length=20, blank=True)
     codigo_dne = models.PositiveIntegerField(null=True, blank=True)
 
@@ -152,16 +167,9 @@ class Opcion(models.Model):
 
 
 class Eleccion(models.Model):
-    slug = models.SlugField(max_length=50, unique=True)
     nombre = models.CharField(max_length=50)
+    slug = AutoSlugField(populate_from=['nombre'])
     fecha = models.DateTimeField(blank=True, null=True)
-    opciones = models.ManyToManyField(Opcion)
-
-    @classmethod
-    def opciones_actuales(cls):
-        if cls.objects.last():
-            return cls.objects.last().opciones.all()
-        return Opcion.objects.none()
 
     class Meta:
         verbose_name = 'Elección'
@@ -170,3 +178,38 @@ class Eleccion(models.Model):
     def __str__(self):
         return self.nombre
 
+
+class Categoria(models.Model):
+    nombre = models.CharField(max_length=100, blank=True,
+        help_text='Nombre descriptivo interno. Ej: Elecciones de Concejales de Tres de Febrero')
+    eleccion = models.ForeignKey('Eleccion', related_name='categorias')
+    cargo = models.CharField(max_length=50,
+        help_text='Nombre del cargo/s elegible. Ej. Senadores Nacionales')
+    slug = AutoSlugField(populate_from=['cargo'])
+    orden = models.PositiveIntegerField(
+        help_text='Orden en la boleta', null=True, blank=True)
+    opciones = models.ManyToManyField('Opcion')
+
+    class Meta:
+        verbose_name = 'Categoría elegible'
+        verbose_name_plural = 'Categorías elegibles'
+
+    def __str__(self):
+        return f'{self.eleccion} - {self.nombre}'
+
+    @property
+    @lru_cache(128)
+    def agregaciones(self):
+        opciones = {}
+        for id in self.opciones.order_by('orden').values_list('id', flat=True):
+            opciones[str(id)] = Sum(
+                Case(
+                    When(
+                        opcion__id=id,
+                        categoria__id=self.id,
+                        then=F('votos')
+                    ),
+                output_field=IntegerField()
+                )
+            )
+        return opciones

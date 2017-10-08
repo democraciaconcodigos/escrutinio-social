@@ -36,12 +36,12 @@ class AsignadoFilter(admin.SimpleListFilter):
             general = Q(
                 tipo='general',
                 asignacion_escuela__isnull=isnull,
-                asignacion_escuela__eleccion__slug='generales2017'
+                asignacion_escuela__categorias__eleccion__slug='generales2017'
             )
             de_mesa = Q(
                 tipo='de_mesa',
                 asignacion_mesa__isnull=isnull,
-                asignacion_mesa__mesa__eleccion__slug='generales2017'
+                asignacion_mesa__mesa__categorias__eleccion__slug='generales2017'
             )
             queryset = queryset.filter(general | de_mesa)
         return queryset
@@ -102,7 +102,7 @@ class VoluntarioAdmin(AdminRowActionsMixin, admin.ModelAdmin):
 
 
 class AsignacionVoluntarioAdmin(AdminRowActionsMixin, admin.ModelAdmin):
-    list_filter = ('mesa__eleccion', 'mesa__lugar_votacion__circuito')
+    list_filter = ('mesa__categorias__eleccion', 'mesa__lugar_votacion__circuito')
 
     raw_id_fields = ("mesa", "voluntario")
     search_fields = (

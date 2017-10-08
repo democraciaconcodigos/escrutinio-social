@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'compat',
     'djgeojson',
     'leaflet',
+    # 'django_yuml',
 
     # nuestras apps
     'elecciones',

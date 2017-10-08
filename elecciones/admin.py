@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import reverse
 from leaflet.admin import LeafletGeoAdmin
-from .models import Seccion, Circuito, LugarVotacion, Mesa, Opcion, Eleccion
+from .models import Seccion, Circuito, LugarVotacion, Mesa, Opcion, Eleccion, Categoria
 from django.http import HttpResponseRedirect
 from django_admin_row_actions import AdminRowActionsMixin
 
@@ -146,7 +146,7 @@ admin.site.register(LugarVotacion, LugarVotacionAdmin)
 admin.site.register(Mesa, MesaAdmin)
 
 
-for model in (Opcion, Eleccion):
+for model in (Opcion, Eleccion, Categoria):
     admin.site.register(model)
 
 

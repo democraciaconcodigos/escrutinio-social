@@ -22,5 +22,5 @@ urlpatterns = [
     url(r'', include(fiscales_urls)),
     url(r'^hijack/', include('hijack.urls')),
     url(r'^admin/', admin.site.urls),
-    url(r'^elecciones/', include(elecciones_urls)),
+    url(r'^resultados/', include(elecciones_urls)),
 ]

@@ -5,7 +5,7 @@ from django.forms import modelformset_factory, BaseModelFormSet
 from django.utils.safestring import mark_safe
 from material import Layout, Row, Fieldset
 from .models import Voluntario, DatoDeContacto, VotoMesaReportado
-from elecciones.models import Mesa, Eleccion, LugarVotacion, Circuito, Seccion
+from elecciones.models import Eleccion, LugarVotacion, Circuito, Seccion, Documento
 from localflavor.ar.forms import ARDNIField
 from django.core.validators import validate_email, URLValidator
 from django.contrib.auth.forms import AuthenticationForm
@@ -274,6 +274,15 @@ class BaseVotoMesaReportadoFormSet(BaseModelFormSet):
             self.warnings.append((form_opcion_total, 'votos', 'El total no corresponde a la cantidad de sobres'))
         """
 
+def reporte_formset_factory(min_num):
+    return modelformset_factory(
+        VotoMesaReportado, form=VotoMesaModelForm,
+        formset=BaseVotoMesaReportadoFormSet,
+        min_num=min_num, extra=0, can_delete=False
+    )
+
+
+
 VotoMesaReportadoFormset = modelformset_factory(
     VotoMesaReportado, form=VotoMesaModelForm,
     formset=BaseVotoMesaReportadoFormSet,
@@ -284,6 +293,6 @@ VotoMesaReportadoFormset = modelformset_factory(
 ContactoInlineFormset = generic_inlineformset_factory(DatoDeContacto, form=DatoDeContactoModelForm, can_delete=True)
 
 ActaMesaModelForm = modelform_factory(
-    Mesa,
-    fields=['foto_acta'],
+    Documento,
+    fields=['tipo', 'archivo'],
 )

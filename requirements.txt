@@ -9,7 +9,7 @@ django-dbbackup==3.1.3.
 django-fancy-cache==0.9.0
 git+https://github.com/mgaitan/django-material#egg=django-material
 django-extensions==1.8.1
-django-formtools==2.0
+git+https://github.com/mgaitan/django-formtools#egg=django-formtools
 html2text==2016.9.19
 django-taggit==0.22.1
 django-geojson==2.10.0
