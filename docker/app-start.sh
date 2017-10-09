@@ -8,7 +8,7 @@ $SITE_DIR/env/bin/uwsgi --chdir ${SITE_DIR}/proj/ \
     --env DJANGO_SETTINGS_MODULE=${PROJECT_NAME}.settings \
     --vacuum \
     --max-requests=5000 \
-    --virtualenv ${SITE_DIR}env/ \
+    --virtualenv ${SITE_DIR}/env/ \
     --socket 0.0.0.0:8000 \
     --processes $NUM_PROCS \
     --threads $NUM_THREADS \
