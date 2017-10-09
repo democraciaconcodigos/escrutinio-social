@@ -45,10 +45,15 @@ Una vez instaladas las dependencias debemos entrar en la carpeta de docker y eje
 
 .. code:: bash
 
-  cd docker
-  docker-compose up
+  docker-compose up -d
 
-Luego de finalizado el proceso podrán acceder a través de `http://localhost:8000/`.
+Para inicializar la base de datos por primera vez, se deberá ejecutar:
+
+.. code:: bash
+
+  docker-compose run app init
+
+Luego de finalizado el proceso podrán acceder a través de `http://localhost/`.
 
 Un superusuario ``admin`` con clave ``admin`` se habrá cargado
 
