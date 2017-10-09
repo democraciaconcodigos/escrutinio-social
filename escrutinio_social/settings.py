@@ -45,7 +45,6 @@ SECRET_KEY = 'changeme'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env("DJANGO_DEBUG", True)
-TEMPLATE_DEBUG = DEBUG
 
 
 ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", '*')
