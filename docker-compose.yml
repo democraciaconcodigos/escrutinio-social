@@ -15,7 +15,7 @@ services:
     command: /project/proj/docker/app-start.sh
     environment:
       - DATABASE_URL=postgres://postgres@db/postgres
-      - SITE_DIR=/project/
+      - SITE_DIR=/project
       - PROJECT_NAME=escrutinio_social
       - GOOGLE_ANALYTICS_PROPERTY_ID=UA-345678-2
     expose:
