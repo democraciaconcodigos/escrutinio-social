@@ -28,14 +28,17 @@ services:
     container_name: escrutinio-social-web
     ports:
       - "80:80"
+      - "443:443"
     depends_on:
       - app
     volumes:
       - ./docker/nginx/default.template.conf:/root/default.template.conf
+      - ./docker/ssl/:/site/ssl/
       - static-volume:/static
-    command: /bin/bash -c "envsubst '$$NGINX_HTTP_PORT' < /root/default.template.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    command: /bin/bash -c "envsubst '$$NGINX_HTTP_PORT $$NGINX_HTTPS_PORT' < /root/default.template.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
     environment:
       - NGINX_HTTP_PORT=80
+      - NGINX_HTTPS_PORT=443
 
 volumes:
   static-volume:
