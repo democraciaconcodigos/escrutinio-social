@@ -121,7 +121,7 @@ WSGI_APPLICATION = 'escrutinio_social.wsgi.application'
 # FORMAT:    postgres://USER:PASSWORD@HOST:PORT/NAME
 DATABASES = {'default': dj_database_url.parse(
                         env("DJANGO_DATABASE_URL",
-                        "django.db.backends.sqlite3://os.path.join(BASE_DIR, 'db.sqlite3')"))}
+                        "sqlite://" + os.path.join(BASE_DIR, 'db.sqlite3')))}
 
 
 # Password validation
