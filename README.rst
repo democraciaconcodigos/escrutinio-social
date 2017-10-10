@@ -66,7 +66,7 @@ para instrucciones detalladas de como instalar Django con python 3.6.
 
 1. Crear un virtualenv
 2. ``pip install -r requirements.txt``
-3. crear base de datos postgres y configurar los datos en ``escrutiniosocial/local_settings.py``
+3. crear base de datos postgres y configurar los datos en ``escrutinio_social/settings.py``
 
 4. ``python manage.py migrate``
 5. cargar fixtures ``python manage.py loaddata fixtures/*``
