@@ -9,6 +9,29 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
+import dj_database_url
+
+
+def env(key, default=None):
+    """Retrieves env vars and makes Python boolean replacements"""
+    val = os.getenv(key, default)
+
+    if val == 'True':
+        val = True
+    elif val == 'False':
+        val = False
+    return val
+
+
+def env_list(key, default=""):
+    val = os.getenv(key, default)
+    return val.split(",")
+
+
+PROJECT_DIR = env(
+    "DJANGO_PROJECT_DIR",
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,9 +44,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'changeme'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DJANGO_DEBUG", True)
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", '*')
 
 
 # Application definition
@@ -94,12 +118,10 @@ WSGI_APPLICATION = 'escrutinio_social.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+# FORMAT:    postgres://USER:PASSWORD@HOST:PORT/NAME
+DATABASES = {'default': dj_database_url.parse(
+                        env("DJANGO_DATABASE_URL",
+                        "sqlite://" + os.path.join(BASE_DIR, 'db.sqlite3')))}
 
 
 # Password validation
@@ -204,21 +226,4 @@ CACHES = {
 
 DEFAULT_PASS_PREFIX = ''
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
-
-# set yours in local_settings.py
-GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-123456-7'
-
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+GOOGLE_ANALYTICS_PROPERTY_ID = env("GOOGLE_ANALYTICS_PROPERTY_ID", 'UA-123456-7')

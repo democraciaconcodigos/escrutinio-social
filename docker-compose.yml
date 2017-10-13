@@ -1,0 +1,41 @@
+version: '2'
+services:
+  db:
+    image: postgres
+    container_name: escrutinio-social-db
+    expose:
+      - "5432"
+
+  app:
+    container_name: escrutinio-social-app
+    build: .
+    volumes:
+      - ./:/projec/proj
+      - static-volume:/project/proj/static/
+    command: /project/proj/docker/app-start.sh
+    environment:
+      - DATABASE_URL=postgres://postgres@db/postgres
+      - SITE_DIR=/project
+      - PROJECT_NAME=escrutinio_social
+      - GOOGLE_ANALYTICS_PROPERTY_ID=UA-345678-2
+    expose:
+      - "8000"
+    depends_on:
+      - db
+
+  web:
+    image: nginx:1.13
+    container_name: escrutinio-social-web
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+    volumes:
+      - ./docker/nginx/default.template.conf:/root/default.template.conf
+      - static-volume:/static
+    command: /bin/bash -c "envsubst '$$NGINX_HTTP_PORT' < /root/default.template.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+    environment:
+      - NGINX_HTTP_PORT=80
+
+volumes:
+  static-volume:

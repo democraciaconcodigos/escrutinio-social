@@ -26,3 +26,4 @@ fabric3
 raven==6.1.0
 psycopg2==2.7.1
 django-analytical==2.2.2
+dj_database_url==0.4.2

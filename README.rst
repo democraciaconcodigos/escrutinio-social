@@ -1,6 +1,9 @@
 Escrutinio Social
 =================
 
+.. image:: https://travis-ci.org/democraciaconcodigos/escrutinio-social.svg?branch=master
+   :target: https://travis-ci.org/democraciaconcodigos/escrutinio-social
+
 Una plataforma web para un recuento provisorio de resultados electorales basado en la colaboración de voluntari@s.
 
 
@@ -33,7 +36,7 @@ En la wiki_ desarrollamos documentación (tanto técnica como no técnica).
 
 
 Entorno de desarrollo con Docker
----------------------
+--------------------------------
 
 Este es un proyecto basado en Django y cuenta con la configuracion de docker para levantar los servicios en contenedores.
 
@@ -45,15 +48,20 @@ Una vez instaladas las dependencias debemos entrar en la carpeta de docker y eje
 
 .. code:: bash
 
-  cd docker
-  docker-compose up
+  docker-compose up -d
 
-Luego de finalizado el proceso podrán acceder a través de `http://localhost:8000/`.
+Para inicializar la base de datos por primera vez, se deberá ejecutar:
+
+.. code:: bash
+
+  docker-compose run app init
+
+Luego de finalizado el proceso podrán acceder a través de `http://localhost/`.
 
 Un superusuario ``admin`` con clave ``admin`` se habrá cargado
 
 Entorno de desarrollo - Instalación tradicional
----------------------
+-----------------------------------------------
 
 Es un proyecto basado en Django. Requiere Python 3.6 y Postgresql.
 Podés ver este `tutorial <https://tutorial.djangogirls.org/es/django_installation/>`_
@@ -61,7 +69,7 @@ para instrucciones detalladas de como instalar Django con python 3.6.
 
 1. Crear un virtualenv
 2. ``pip install -r requirements.txt``
-3. crear base de datos postgres y configurar los datos en ``escrutiniosocial/local_settings.py``
+3. crear base de datos postgres y configurar los datos en ``escrutinio_social/settings.py``
 
 4. ``python manage.py migrate``
 5. cargar fixtures ``python manage.py loaddata fixtures/*``
