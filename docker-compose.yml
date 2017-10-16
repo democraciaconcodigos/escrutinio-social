@@ -18,6 +18,7 @@ services:
       - SITE_DIR=/project
       - PROJECT_NAME=escrutinio_social
       - GOOGLE_ANALYTICS_PROPERTY_ID=UA-345678-2
+      - DJANGO_SECRET_KEY=unaclavesupersecreta
     expose:
       - "8000"
     depends_on:
