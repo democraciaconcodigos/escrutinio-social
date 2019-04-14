@@ -7,7 +7,7 @@ Escrutinio Social
 Una plataforma web para un recuento provisorio de resultados electorales basado en la colaboración de voluntari@s.
 
 
-Es una inciativa de `Open Data Córdoba <https://github.com/OpenDataCordoba>`_ junto a diversas organizaciones
+Es una iniciativa de `Open Data Córdoba <https://github.com/OpenDataCordoba>`_ junto a diversas organizaciones
 sociales y políticas, con el fin de incrementar la transparencia y fortalecer la democracia.
 
 
