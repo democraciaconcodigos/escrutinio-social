@@ -5,7 +5,9 @@ Escrutinio Social
    :target: https://travis-ci.org/democraciaconcodigos/escrutinio-social
 
 
-.. info:: Este fue el repositorio original del proyecto, nacido en el evento "Democracia con códigos" en Córdoba, 2013. El desarrollo vigente lo impulsa el colectivo Open Data Córdoba y el repositorio es https://github.com/OpenDataCordoba/escrutinio-social
+**ATENCION**
+> Este fue el repositorio original del proyecto, nacido en el evento "Democracia con códigos" en Córdoba, 2013. 
+> El desarrollo vigente lo impulsa el colectivo Open Data Córdoba y el repositorio es https://github.com/OpenDataCordoba/escrutinio-social
 
 
 Escrutinio Social es una plataforma web para un recuento provisorio de resultados electorales basado en la colaboración de voluntari@s.
